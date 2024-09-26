@@ -25,5 +25,14 @@ def euclidean_distance(d1, d2) :
 
 ## You implement this.
 def cosine_similarity(d1,d2) :
-    pass
+
+    sum_squares_d1 = 0
+    sum_squares_d1 = sum([d1.tokens[item] ** 2 + sum_squares_d1 for item in d1.tokens.keys()])
+    mag_d1 = sqrt(sum_squares_d1)
+
+    sum_squares_d2 = 0
+    sum_squares_d2 = sum([d2.tokens[item] ** 2 + sum_squares_d2 for item in d2.tokens.keys()])
+    mag_d2 = sqrt(sum_squares_d2)
+
+    return (d1 * d2) / (mag_d1 + mag_d2)
 
