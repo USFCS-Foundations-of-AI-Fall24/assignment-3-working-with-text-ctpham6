@@ -19,6 +19,7 @@ class Cluster :
 
     ## You do this.
     def calculate_centroid(self):
+        # The centroid is a Document whose token counts are the average of all the token counts of its members
         centroid = 0
         for document in self.members :
             centroid += len(document.tokens)
