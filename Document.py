@@ -32,4 +32,7 @@ def cosine_similarity(d1,d2) :
     dot_product = sum([(d1.tokens[item] * d2.tokens[item]) for item in d1.tokens.keys() | d2.tokens.keys()])
     mag_d1 = sqrt(sum([d1.tokens[item] ** 2 for item in d1.tokens.keys()]))
     mag_d2 = sqrt(sum([d2.tokens[item] ** 2 for item in d2.tokens.keys()]))
-    return dot_product / (mag_d1 * mag_d2)
+    if mag_d1 == 0 or mag_d2 == 0:
+        return 0
+    else:
+        return dot_product / (mag_d1 * mag_d2)
