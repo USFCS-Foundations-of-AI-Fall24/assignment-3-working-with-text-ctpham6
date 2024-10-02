@@ -26,6 +26,12 @@ class TestCluster(TestCase):
         d2.add_tokens(['cat', 'dog', 'fish'])
         d3 = Document(true_class='neg')
         d3.add_tokens(['bunny', 'lizard', 'octopus'])
+        d4 = Document(true_class='pos')
+        d4.add_tokens(['the', 'quick', 'brown', 'fox', 'skibidi'])
+        d5 = Document(true_class='pos')
+        d5.add_tokens(['cat', 'dog', 'fish', 'toilet'])
+        d6 = Document(true_class='neg')
+        d6.add_tokens(['bunny', 'lizard', 'octopus', 'bop', 'bop', 'yes', 'yes'])
         print(k_means(2, ['pos', 'neg'], [d,d2,d3]))
 
 
