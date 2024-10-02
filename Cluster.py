@@ -34,7 +34,7 @@ def k_means(n_clusters, true_classes, data) :
     # initially assign data randomly.
     for document in data :
         random_cluster = random.choice(cluster_list)
-        random_cluster.append(document)
+        random_cluster.members.append(document)
 
     # compute initial cluster centroids
     for cluster in cluster_list :
@@ -42,7 +42,12 @@ def k_means(n_clusters, true_classes, data) :
 
     #   reassign each Document to the closest matching cluster using
     #   cosine similarity
-    
+    for cluster in cluster_list :
+        for document in cluster.members :
+            sim_to_compare = cosine_similarity(document, cluster.centroid)
+            for cluster_candidate in cluster_list :
+                if cosine_similarity(document, cluster_candidate) > sim_to_compare:
+                    cluster_candidate.members.append(cluster.members.pop(document))
 
     #   compute the centroids of each cluster
     for cluster in cluster_list :
