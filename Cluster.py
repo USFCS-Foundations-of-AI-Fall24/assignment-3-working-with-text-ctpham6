@@ -21,15 +21,21 @@ class Cluster :
 
     def calculate_centroid(self):
         # The centroid is a Document whose token counts are the average of all the token counts of its members
-        centroid_document = Document()
-        if len(self.members) == 0:
-            centroid_document.set_centroid(0)
-            return centroid_document
-        centroid = 0
+        centroid = Document()
+        union = []
         for document in self.members :
-            centroid += len(document.tokens)
-        centroid_document.set_centroid(centroid / len(self.members))
-        return centroid_document
+            union |= document.tokens.keys()
+
+        for item in union :
+            doc_count_to_average = 0
+            token_sum = 0
+            for document in self.members :
+                if item in document.tokens.keys() :
+                    doc_count_to_average += 1
+                    token_sum += document.tokens[item]
+            centroid.tokens[item] = token_sum / doc_count_to_average
+
+        return centroid
 
 
 # Call like so: k_means(2, ['pos','neg'], positive_docs + negative_docs)
@@ -46,14 +52,20 @@ def k_means(n_clusters, true_classes, data) :
     for cluster in cluster_list :
         cluster.centroid = cluster.calculate_centroid()
 
+    done = False
     #   reassign each Document to the closest matching cluster using
     #   cosine similarity
-    for cluster in cluster_list :
-        for document in cluster.members :
-            sim_to_compare = cosine_similarity(document, cluster.centroid)
-            for cluster_candidate in cluster_list :
-                if cosine_similarity(document, cluster_candidate.centroid) > sim_to_compare:
-                    cluster_candidate.members.append(cluster.members.pop(document))
+    while not done :
+        moved = False
+        for cluster in cluster_list :
+            for document in cluster.members :
+                sim_to_compare = cosine_similarity(document, cluster.centroid)
+                for cluster_candidate in cluster_list :
+                    if cosine_similarity(document, cluster_candidate.centroid) > sim_to_compare:
+                        cluster_candidate.members.append(cluster.members.pop(document))
+                        moved = True
+        if not moved :
+            done = True
 
     #   compute the centroids of each cluster
     for cluster in cluster_list :
