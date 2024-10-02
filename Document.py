@@ -12,6 +12,9 @@ class Document :
         for item in token_list :
             self.tokens[item] = self.tokens[item] + 1
 
+    def set_centroid(self, centroid_value) :
+        self.tokens[""] = centroid_value
+
     def __repr__(self):
         return f"{self.true_class} {self.tokens}"
 
@@ -23,7 +26,7 @@ def euclidean_distance(d1, d2) :
     dist = sum([(d1.tokens[item] - d2.tokens[item])**2 for item in union])
     return dist
 
-## You implement this.
+# return the cosine similarity between two documents
 def cosine_similarity(d1,d2) :
 
     dot_product = sum([(d1.tokens[item] * d2.tokens[item]) for item in d1.tokens.keys() | d2.tokens.keys()])
