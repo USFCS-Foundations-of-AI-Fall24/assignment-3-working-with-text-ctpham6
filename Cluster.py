@@ -31,14 +31,21 @@ class Cluster :
 def k_means(n_clusters, true_classes, data) :
     cluster_list = [Cluster(centroid=Document(true_class=item)) for item in true_classes]
 
-    ## initially assign data randomly.
+    # initially assign data randomly.
+    for document in data :
+        random_cluster = random.choice(cluster_list)
+        random_cluster.append(document)
 
-    ## compute initial cluster centroids
-
-    # while not done and i < limit
-    #   i++
+    # compute initial cluster centroids
+    for cluster in cluster_list :
+        cluster.centroid = cluster.calculate_centroid()
 
     #   reassign each Document to the closest matching cluster using
     #   cosine similarity
+    
+
     #   compute the centroids of each cluster
+    for cluster in cluster_list :
+        cluster.centroid = cluster.calculate_centroid()
+
     return cluster_list
