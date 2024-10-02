@@ -1,5 +1,7 @@
 import random
 
+from nltk.data import retrieve
+
 from Document import *
 
 class Cluster :
@@ -17,13 +19,17 @@ class Cluster :
     def __repr__(self):
         return f"{self.centroid} {len(self.members)}"
 
-    ## You do this.
     def calculate_centroid(self):
         # The centroid is a Document whose token counts are the average of all the token counts of its members
+        centroid_document = Document()
+        if len(self.members) == 0:
+            centroid_document.set_centroid(0)
+            return centroid_document
         centroid = 0
         for document in self.members :
             centroid += len(document.tokens)
-        return centroid / len(self.members)
+        centroid_document.set_centroid(centroid / len(self.members))
+        return centroid_document
 
 
 # Call like so: k_means(2, ['pos','neg'], positive_docs + negative_docs)
@@ -46,7 +52,7 @@ def k_means(n_clusters, true_classes, data) :
         for document in cluster.members :
             sim_to_compare = cosine_similarity(document, cluster.centroid)
             for cluster_candidate in cluster_list :
-                if cosine_similarity(document, cluster_candidate) > sim_to_compare:
+                if cosine_similarity(document, cluster_candidate.centroid) > sim_to_compare:
                     cluster_candidate.members.append(cluster.members.pop(document))
 
     #   compute the centroids of each cluster
