@@ -62,7 +62,8 @@ def k_means(n_clusters, true_classes, data) :
                 sim_to_compare = cosine_similarity(document, cluster.centroid)
                 for cluster_candidate in cluster_list :
                     if cosine_similarity(document, cluster_candidate.centroid) > sim_to_compare:
-                        cluster_candidate.members.append(cluster.members.pop(document))
+                        cluster_candidate.members.append(document)
+                        cluster.members.remove(document)
                         moved = True
         if not moved :
             done = True
