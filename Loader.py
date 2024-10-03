@@ -87,10 +87,19 @@ def compute_homogeneity(list_of_clusters, list_of_classes) :
 # compute_completeness(result, ['pos','neg'])
 
 def compute_completeness(list_of_clusters, list_of_classes) :
-    # clist will be the homogeneity for each cluster.
+
+    # clist will be the completeness for each cluster.
     clist = []
 
-
+    clist_index = 0
+    for cluster in list_of_clusters :
+        dom_class_count = 0
+        dominant_class = cluster.true_class
+        for document in cluster.members:
+            if document.true_class == dominant_class:
+                dom_class_count += 1
+        clist[clist_index] = dom_class_count / len(cluster.members)
+        clist_index += 1
 
     return clist
 
