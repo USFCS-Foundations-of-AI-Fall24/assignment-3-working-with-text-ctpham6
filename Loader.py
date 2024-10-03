@@ -1,5 +1,6 @@
 ## Code for loading training sets and creating documents.
 import string
+from turtledemo.clock import datum
 
 from Document import *
 from Cluster import *
@@ -52,8 +53,30 @@ def convert_to_lowercase(token) :
 # result = k_means(2, ['pos','neg'], positive_docs + negative_docs)
 # compute_homogeneity(result, ['pos','neg'])
 def compute_homogeneity(list_of_clusters, list_of_classes) :
+
     # hlist will be the homogeneity for each cluster.
     hlist = []
+
+    largest_class = list_of_classes[0]
+    count = 1
+    i = 1
+    while i < len(list_of_classes) :
+        if largest_class == list_of_classes[i]:
+            count += 1
+        else:
+            if count == 1:
+                largest_class = list_of_classes[i]
+            else:
+                count -= 1
+
+    i = 0
+    for cluster in list_of_clusters :
+        biggest_class_count = 0
+        for document in cluster.members:
+            if document.true_class == largest_class:
+                biggest_class_count += 1
+        hlist[i] = biggest_class_count / len(cluster.members)
+        i += 1
 
     return hlist
 
@@ -63,9 +86,11 @@ def compute_homogeneity(list_of_clusters, list_of_classes) :
 # result = k_means(2, ['pos','neg'], positive_docs + negative_docs)
 # compute_completeness(result, ['pos','neg'])
 
-def compute_completeness(list_of_clusters, list_of_classes)
+def compute_completeness(list_of_clusters, list_of_classes) :
     # clist will be the homogeneity for each cluster.
     clist = []
+
+
 
     return clist
 
