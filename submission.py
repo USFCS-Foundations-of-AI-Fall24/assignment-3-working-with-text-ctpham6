@@ -4,6 +4,17 @@ import Cluster
 import make_dataset
 from make_dataset import create_docs
 
+def print_cluster(cluster_to_print):
+    print("Cluster of class: " + cluster_to_print.centroid.true_class)
+    print("Contains " + str(len(cluster_to_print.members)) + " Documents")
+    doc = 1
+    for document in cluster_to_print.members:
+        print("Document", doc, "of class " + str(document.true_class))
+        for token in document.tokens:
+            print("Token: [" + str(token) + "] of value", document.tokens[token])
+        doc += 1
+        print("__________________________________")
+
 # Here is my submission for Project 3
 # Lets create some documents. 5 positive documents and 5 negative documents of length 100 should do
 data = create_docs(5, 5)
@@ -23,4 +34,5 @@ for neg_word_set in data[1]:
 # This returns a cluster list
 # For every cluster's centroid, print out its tokens and values
 for cluster in k_means(2, ['pos', 'neg'], documents):
-    print("Cluster: ", cluster.centroid.true_class)
+    print_cluster(cluster)
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
