@@ -37,13 +37,11 @@ def not_cat(token) :
 
 # transforms - convert a token into a new format
 
-# you do this.
 def remove_trailing_punct(token) :
-    pass
+    return token.strip(string.punctuation)
 
-# and this
 def convert_to_lowercase(token) :
-    pass
+    return token.lower()
 
 
 
