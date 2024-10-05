@@ -4,7 +4,7 @@ import Cluster
 import make_dataset
 from make_dataset import create_docs
 
-def print_cluster(cluster_to_print):
+def print_cluster(cluster_to_print, token_per_row = 2):
     print("Cluster of class: " + cluster_to_print.centroid.true_class)
     print("Contains " + str(len(cluster_to_print.members)) + " Documents")
     doc = 1
@@ -12,9 +12,13 @@ def print_cluster(cluster_to_print):
         token_num = 1
         print("Document", doc, "of class " + str(document.true_class))
         for token in document.tokens:
-            print("Token", token_num, ": [ " + str(token) + " ] of value", document.tokens[token])
+            if token_num % token_per_row == 0:
+                print(token_num, ": [ " + str(token) + " ] of value", document.tokens[token])
+            else:
+                print(token_num, ": " + str(token) + " of value", document.tokens[token], "          ", end=" ")
             token_num += 1
         doc += 1
+        print("")
         print("__________________________________")
 
 # Here is my submission for Project 3
@@ -35,7 +39,7 @@ for neg_word_set in data[1]:
 # K-means will be called to make and group the Documents by clusters
 # This returns a cluster list
 # For every cluster's centroid, print out its tokens and values
-## Each word will have brackets [] surrounding it so that you can look at it better. They are NOT in a list
+# Each token is printed out like this:  "[Token #] [Token String] of value [Token Value]"
 for cluster in k_means(2, ['pos', 'neg'], documents):
-    print_cluster(cluster)
+    print_cluster(cluster, token_per_row = 3)
 print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
