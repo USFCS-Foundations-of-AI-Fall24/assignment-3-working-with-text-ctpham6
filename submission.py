@@ -38,6 +38,11 @@ for neg_word_set in data[1]:
     doc_to_add.add_tokens(neg_word_set)
     documents.append(doc_to_add)
 
+# Prints the documents in raw form. This proves that they exist, have classes, and have unique tokens
+for document in documents:
+    print(document)
+
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
 # K-means will be called to make and group the Documents by clusters
 # This returns a cluster list
 # For every cluster's centroid, print out its tokens and values
