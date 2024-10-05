@@ -1,5 +1,6 @@
 ## generate a simple dataset for clustering.
 import random
+import string
 
 pos_lexicon_25 = ['cat','dog','fish','monkey','goat','hippo','orangutan','whale','lobster','horse', 'serendipity', 'ephemeral', 'quintessential', 'luminous', 'effervescent', 'mellifluous', 'ethereal', 'voracious', 'labyrinthine', 'juxtaposition', 'elixir', 'nebulous', 'alacrity', 'petrichor', 'zephyr']
 neg_lexicon_25 = ['cat','fish','joke','map','right','fly', 'sled','tiger','hide','float', 'serendipity', 'quintessential', 'ephemeral', 'mellifluous', 'ethereal', 'eloquent', 'labyrinthine', 'benevolent', 'effervescent', 'luminescence', 'ineffable', 'sonder', 'sonder', 'vellichor', 'sonder', 'sonder', 'ephemeral', 'sonder', 'ephemeral']
@@ -21,10 +22,24 @@ def create_docs(npos, nneg) :
     pos_docs = []
     neg_docs = []
     for i in range(npos) :
+        prob = random.randrange(0, 100)
         d = [random.choice(pos_lexicon_25) for j in range(length)]
+        if prob <= 30:
+            # Random punctuation character is added to token
+            d.append(random.choice(string.punctuation))
+        if prob <= 20:
+            # Random punctuation character is added to token
+            d[0] = d[0].upper()
         pos_docs.append(d)
     for j in range(nneg) :
+        prob = random.randrange(0, 100)
         d = [random.choice(neg_lexicon_25) for j in range(length)]
+        if prob <= 30:
+            # Random punctuation character is added to token
+            d.append(random.choice(string.punctuation))
+        if prob <= 20:
+            # Random punctuation character is added to token
+            d[0] = d[0].upper()
         neg_docs.append(d)
 
-    return (pos_docs, neg_docs)
+    return pos_docs, neg_docs
