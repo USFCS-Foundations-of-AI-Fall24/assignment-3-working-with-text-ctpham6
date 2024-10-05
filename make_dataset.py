@@ -22,24 +22,26 @@ def create_docs(npos, nneg) :
     pos_docs = []
     neg_docs = []
     for i in range(npos) :
-        prob = random.randrange(0, 100)
         d = [random.choice(pos_lexicon_25) for j in range(length)]
-        if prob <= 30:
-            # Random punctuation character is added to token
-            d.append(random.choice(string.punctuation))
-        if prob <= 20:
-            # Random punctuation character is added to token
-            d[0] = d[0].upper()
+        for token in range(len(d)):
+            prob = random.randrange(0, 100)
+            if prob <= 30:
+                # Random punctuation character is added to token
+                d[token] += random.choice(string.punctuation)
+            if prob <= 20:
+                # Random punctuation character is added to token
+                d[token] = d[token].capitalize()
         pos_docs.append(d)
     for j in range(nneg) :
-        prob = random.randrange(0, 100)
         d = [random.choice(neg_lexicon_25) for j in range(length)]
-        if prob <= 30:
-            # Random punctuation character is added to token
-            d.append(random.choice(string.punctuation))
-        if prob <= 20:
-            # Random punctuation character is added to token
-            d[0] = d[0].upper()
+        for token in range(len(d)):
+            prob = random.randrange(0, 100)
+            if prob <= 30:
+                # Random punctuation character is added to token
+                d[token] += random.choice(string.punctuation)
+            if prob <= 20:
+                # Random punctuation character is added to token
+                d[token] = d[token].capitalize()
         neg_docs.append(d)
 
     return pos_docs, neg_docs
