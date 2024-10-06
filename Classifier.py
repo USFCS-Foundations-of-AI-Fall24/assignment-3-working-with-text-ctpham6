@@ -16,7 +16,6 @@ def classify(clusters, item) :
 
 
 def five_fold_cross_validation(nwords, nelements) :
-    pass
     ## generate nelements documents of each type (pos and neg), with nwords words in each doc.
     documents = []
     word_sets = create_docs(nelements, nelements, nwords)
@@ -25,17 +24,27 @@ def five_fold_cross_validation(nwords, nelements) :
         doc_to_add = Document(true_class='pos')
         doc_to_add.add_tokens(set)
         documents.append(doc_to_add)
-        
+
     for set in word_sets[1] :
         doc_to_add = Document(true_class='neg')
         doc_to_add.add_tokens(set)
         documents.append(doc_to_add)
 
     # divide the documents into 5 folds.
-    ## for i = 1 to 5
-    # cluster 80% of the documents. (four folds)
-    #    use classify to classify the other 20%.
-    #    measure accuracy - how many of the documents were classified correctly?
-    # return the average accuracy
+    fold_size = len(documents) // 5
+    docs_to_classify = documents[0:fold_size]
+    docs_to_cluster = documents[fold_size:len(documents)]
+    clusters = []
+    for doc in docs_to_cluster :
+        cluster_to_add = Cluster(centroid=Document(true_class=doc.true_class), members=[doc])
+        cluster_to_add.calculate_centroid()
+        clusters.append(cluster_to_add)
 
+    averages = []
+    for doc in docs_to_classify :
+        averages.append(classify(clusters, doc))
 
+    for average in averages :
+        print(average)
+
+five_fold_cross_validation(100, 40)
