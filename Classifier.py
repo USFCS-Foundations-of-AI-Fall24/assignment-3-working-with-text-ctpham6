@@ -30,6 +30,9 @@ def five_fold_cross_validation(nwords, nelements) :
         documents.append(doc_to_add)
 
     # divide the documents into 5 folds.
+    # Clusters the 80%
+    # Classifies the other 20%
+    # Repeates until every individual document has been classified
     fold_size = len(documents) // 5
     averages = []
     i = 0
@@ -44,11 +47,13 @@ def five_fold_cross_validation(nwords, nelements) :
         clusters = k_means(2, ['pos','neg'], docs_to_cluster)
 
         for doc in docs_to_classify :
-            averages.append(classify(clusters, doc))
+            averages.append(doc.true_class == classify(clusters, doc))
         i += 1
 
-    for average in averages :
-        print(average)
+    return round(sum(averages) / len(averages), 2)
+
+def classify_submission_showcase() :
+    five_fold_cross_validation(100, 20)
 
 if __name__=="__main__" :
     five_fold_cross_validation(100, 10)
