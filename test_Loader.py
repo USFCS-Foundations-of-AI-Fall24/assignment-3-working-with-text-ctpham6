@@ -24,6 +24,34 @@ class Test(TestCase):
                     assert (False)
         assert (True)
 
+    def test_homogeneity(self):
+        pos_reviews, neg_reviews = create_docs(10, 10)
+
+        positive_docs = create_easy_documents(pos_reviews, 'pos',
+                                              filters=[],
+                                              transforms=[])
+
+        negative_docs = create_easy_documents(neg_reviews, 'neg',
+                                              filters=[],
+                                              transforms=[])
+
+        result = k_means(2, ['pos', 'neg'], positive_docs + negative_docs)
+        compute_homogeneity(result, ['pos','neg'])
+
+    def test_completeness(self):
+        pos_reviews, neg_reviews = create_docs(10, 10)
+
+        positive_docs = create_easy_documents(pos_reviews, 'pos',
+                                              filters=[],
+                                              transforms=[])
+
+        negative_docs = create_easy_documents(neg_reviews, 'neg',
+                                              filters=[],
+                                              transforms=[])
+
+        result = k_means(2, ['pos', 'neg'], positive_docs + negative_docs)
+        compute_completeness(result, ['pos', 'neg'])
+
     def test_workflow(self):
         pos_reviews, neg_reviews = create_docs(10, 10)
 
@@ -35,5 +63,6 @@ class Test(TestCase):
                                               filters=[],
                                               transforms=[])
 
-
-
+        result = k_means(2, ['pos', 'neg'], positive_docs + negative_docs)
+        compute_homogeneity(result, ['pos', 'neg'])
+        compute_completeness(result, ['pos', 'neg'])
