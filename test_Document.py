@@ -10,8 +10,8 @@ class TestDocument(TestCase):
     def test_addTokens(self):
         d = Document(true_class='pos')
         d.add_tokens(['cat', 'dog', 'fish'])
-        self.assertEqual(d.tokens['cat'], 2)
-        self.assertEqual(d.tokens['aardvark'], 1)
+        self.assertEqual(d.tokens['cat'], 1)
+        self.assertEqual(d.tokens['aardvark'], 0)
 
 
 class Test(TestCase):
