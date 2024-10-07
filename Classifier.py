@@ -52,8 +52,8 @@ def five_fold_cross_validation(nwords, nelements) :
 
     return round(sum(averages) / len(averages), 2)
 
-def classify_submission_showcase() :
-    five_fold_cross_validation(100, 50)
+def classify_submission_showcase(doc_count = 50) :
+    print("Percentage of the", doc_count * 2, "that were classified correctly was", five_fold_cross_validation(100, doc_count), "out of 1.00")
 
 if __name__=="__main__" :
     five_fold_cross_validation(100, 50)
