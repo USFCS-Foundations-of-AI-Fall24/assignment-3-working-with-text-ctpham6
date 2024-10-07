@@ -2,6 +2,8 @@
 import string
 from turtledemo.clock import datum
 
+from docutils.utils.smartquotes import default_smartypants_attr
+
 from Document import *
 from Cluster import *
 from make_dataset import create_docs
@@ -16,12 +18,20 @@ def create_easy_documents(list_of_docs, true_class, filters=None, transforms=Non
     for item in list_of_docs :
         d = Document(true_class=true_class)
         words = item
-        ## deal with filters here
         for f in filters:
-            words = [word for word in words if f(word)]
+            words = [word for word in words if not_stopword(word)]
 
-        ## deal with transforms here
-
+        for t in transforms:
+            if t == 'convert_to_lowercase':
+                word = 0
+                while word < len(words):
+                    words[word] = convert_to_lowercase(words[word].lower())
+                    word += 1
+            elif t == 'remove_trailing_punct':
+                word = 0
+                while word < len(words):
+                    words[word] = remove_trailing_punct(words[word])
+                    word += 1
         d.add_tokens(words)
         document_list.append(d)
     return document_list
