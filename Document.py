@@ -12,9 +12,6 @@ class Document :
         for item in token_list :
             self.tokens[item] = self.tokens[item] + 1
 
-    def set_centroid(self, centroid_value) :
-        self.tokens[""] = centroid_value
-
     def __repr__(self):
         return f"{self.true_class} {self.tokens}"
 
