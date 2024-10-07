@@ -14,9 +14,23 @@ def compute_zeroR(data) :
     print(table['no-recurrence-events'].value_counts().idxmax())
 
 # Write a function that determines the most common value for age and menopause for patients with recurrences.
+def compute_common_age_menopause(data) :
+    table = pd.read_csv(data)
+    data_frame = pd.DataFrame(table)
+    filtered_table = data_frame[data_frame['no-recurrence-events'] == 'recurrence-events']
+    filtered_table = filtered_table[filtered_table['premeno'] != "premeno"]
+    print("Out of all the patients with recurrences...")
+    print(filtered_table['30-39'].value_counts().idxmax(), "is the most common age")
+    print(filtered_table['premeno'].value_counts().idxmax(), "is the most common menopause")
 
 # Write a function that plots the number of recurrences for each age group.
+def plot_age_recurrences(data):
+    pass
 
-view_classifications('breast-cancer.data')
-print("-----------------------------")
-compute_zeroR('breast-cancer.data')
+# view_classifications('breast-cancer.data')
+# print("-----------------------------")
+# compute_zeroR('breast-cancer.data')
+# print("-----------------------------")
+# compute_common_age_menopause('breast-cancer.data')
+# print("-----------------------------")
+plot_age_recurrences('breast-cancer.data')
