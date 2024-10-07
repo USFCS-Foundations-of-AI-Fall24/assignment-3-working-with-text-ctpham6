@@ -3,6 +3,7 @@ from Cluster import k_means
 from Document import Document
 from Loader import create_easy_documents, compute_homogeneity, compute_completeness, loader_submission_showcase
 from make_dataset import create_docs
+import pandasExercise
 
 # Helper Function to print a cluster in a way that will not make scrolling through the print too long
 def print_cluster(cluster_to_print, token_per_row = 2):
@@ -24,6 +25,9 @@ def print_cluster(cluster_to_print, token_per_row = 2):
         print("__________________________________")
 
 # Here is my submission for Project 3
+# Running the program will give the results of my pandasExercise.py.
+# Every part of my output will be seperated by -_-_-_-_
+# After that...
 # Lets create some documents. 5 positive documents and 5 negative documents of length 100 should do
 data = create_docs(5, 5, length=100, use_abnormalities=True)
 documents = []
