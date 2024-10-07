@@ -25,7 +25,7 @@ def print_cluster(cluster_to_print, token_per_row = 2):
 
 # Here is my submission for Project 3
 # Lets create some documents. 5 positive documents and 5 negative documents of length 100 should do
-data = create_docs(5, 5)
+data = create_docs(5, 5, length=100, use_abnormalities=True)
 documents = []
 
 for pos_word_set in data[0]:
@@ -49,7 +49,7 @@ print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 # Each token is printed out like this:  "[Token #] [Token String] of value [Token Value]"
 cluster_list = k_means(2, ['pos', 'neg'], documents)
 for cluster in cluster_list:
-    print_cluster(cluster, token_per_row = 100)
+    print_cluster(cluster, token_per_row = 250)
 print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
 
 # This section will be to show Loader.py. What this function call will do is basically what the main does:
