@@ -1,9 +1,10 @@
+from Classifier import classify_submission_showcase
 from Cluster import k_means
 from Document import Document
 from Loader import create_easy_documents, compute_homogeneity, compute_completeness, loader_submission_showcase
 from make_dataset import create_docs
 
-# Helper Function
+# Helper Function to print a cluster in a way that will not make scrolling through the print too long
 def print_cluster(cluster_to_print, token_per_row = 2):
     print("Cluster of class: " + cluster_to_print.centroid.true_class)
     print("Contains " + str(len(cluster_to_print.members)) + " Documents")
@@ -48,7 +49,7 @@ print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 # Each token is printed out like this:  "[Token #] [Token String] of value [Token Value]"
 cluster_list = k_means(2, ['pos', 'neg'], documents)
 for cluster in cluster_list:
-    print_cluster(cluster, token_per_row = 500)
+    print_cluster(cluster, token_per_row = 100)
 print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
 
 # This section will be to show Loader.py. What this function call will do is basically what the main does:
@@ -57,3 +58,12 @@ print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 # Finally, it computes each cluster's homogeneity and completeness and prints its value in an ordered fashion
 loader_submission_showcase()
 print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+
+# This section will be to show Classifier.py. What this function call will do is call five_fold_cross_validation
+# The function basically make 50 positive and 50 negative documents for a total of 100. Each doc has 100 tokens
+# For 5 loops, 20% of those docs will individually be classified while 80% of those docs will be clustered
+# Whether the docs are classified right are put in a boolean list. The percentage of documents classified
+# correctly is outputted as a decimal point
+classify_submission_showcase()
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+print("Done!")
