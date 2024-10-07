@@ -134,7 +134,26 @@ def compute_completeness(list_of_clusters, list_of_classes) :
     return clist
 
 def loader_submission_showcase() :
-    __name__ = "__main__"
+    pos_reviews, neg_reviews = create_docs(50, 50)
+
+    positive_docs = create_easy_documents(pos_reviews, 'pos',
+                                          filters=[],
+                                          transforms=[])
+
+    negative_docs = create_easy_documents(neg_reviews, 'neg',
+                                          filters=[],
+                                          transforms=[])
+
+    result = k_means(2, ['pos', 'neg'], positive_docs + negative_docs)
+    print("Out of every cluster, what percentage of their documents are comprised of the most common class?")
+    print("Homogeneity:")
+    for homogeneity in compute_homogeneity(result, ['pos', 'neg']):
+        print(homogeneity)
+    print(
+        "\nOut of every cluster's most common class, what percentage of all documents in said common class are in the cluster?")
+    print("Completeness:")
+    for completeness in compute_completeness(result, ['pos', 'neg']):
+        print(completeness)
 
 if __name__=="__main__" :
 
@@ -153,7 +172,7 @@ if __name__=="__main__" :
     print("Homogeneity:")
     for homogeneity in compute_homogeneity(result, ['pos','neg']):
         print(homogeneity)
-    print("\nOut of every cluster's most common class, what percentage of all documents in that class are in the cluster?")
+    print("\nOut of every cluster's most common class, what percentage of all documents in said common class are in the cluster?")
     print("Completeness:")
     for completeness in compute_completeness(result, ['pos', 'neg']):
         print(completeness)
