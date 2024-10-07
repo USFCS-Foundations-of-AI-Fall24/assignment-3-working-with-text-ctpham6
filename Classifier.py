@@ -1,7 +1,6 @@
 from Cluster import *
 from Document import *
 from make_dataset import create_docs
-from submission import doc_to_add
 
 
 def classify(clusters, item) :
@@ -32,19 +31,24 @@ def five_fold_cross_validation(nwords, nelements) :
 
     # divide the documents into 5 folds.
     fold_size = len(documents) // 5
-    docs_to_classify = documents[0:fold_size]
-    docs_to_cluster = documents[fold_size:len(documents)]
-    clusters = []
-    for doc in docs_to_cluster :
-        cluster_to_add = Cluster(centroid=Document(true_class=doc.true_class), members=[doc])
-        cluster_to_add.calculate_centroid()
-        clusters.append(cluster_to_add)
-
     averages = []
-    for doc in docs_to_classify :
-        averages.append(classify(clusters, doc))
+    i = 0
+    while i < 5:
+        if i == 4:
+            docs_to_classify = documents[fold_size * 4:len(documents)]
+            docs_to_cluster = documents[0:fold_size * 4]
+        else:
+            docs_to_classify = documents[(fold_size * i):(fold_size * (i + 1))]
+            docs_to_cluster = documents[:fold_size * i] + documents[(fold_size * (i + 1)):]
+
+        clusters = k_means(2, ['pos','neg'], docs_to_cluster)
+
+        for doc in docs_to_classify :
+            averages.append(classify(clusters, doc))
+        i += 1
 
     for average in averages :
         print(average)
 
-five_fold_cross_validation(100, 40)
+if __name__=="__main__" :
+    five_fold_cross_validation(100, 10)
