@@ -5,7 +5,6 @@ from turtledemo.clock import datum
 from Document import *
 from Cluster import *
 from make_dataset import create_docs
-from submission import cluster_list
 
 
 # you should be able to call this like:
@@ -33,7 +32,7 @@ def not_stopword(token) :
     return token not in ['a','an','the']
 
 def not_cat(token) :
-    return token is not 'cat'
+    return token != 'cat'
 
 
 # transforms - convert a token into a new format
@@ -54,7 +53,6 @@ def compute_homogeneity(list_of_clusters, list_of_classes) :
 
     # hlist will be the homogeneity for each cluster.
     hlist = []
-    hlist_index = 0
 
     # goes through every cluster to find the largest class in each of them
     for cluster in list_of_clusters :
@@ -63,9 +61,7 @@ def compute_homogeneity(list_of_clusters, list_of_classes) :
         count = 0
         # list keeps track of count of each class in cluster corresponding with list_of_classes[i]
         # if class_count[0] = 5, then the frequency of the class in list_of_classes[0] is 5
-        class_count = []
-        for class_type in list_of_classes :
-            class_count[list_of_classes.index(class_type)] = 0
+        class_count = defaultdict(lambda:0)
         # for every document in the cluster, if its classes are valid, increment the frequency list and count
         # calculate the largest class as needed
         for doc in cluster.members:
@@ -81,10 +77,9 @@ def compute_homogeneity(list_of_clusters, list_of_classes) :
         # my own decision to use the first class as the largest class if there is an equal amount of them
         # calculates the homogeneity (# articles of largest class / total # articles to 2 places)
         if count == 0 :
-            hlist[hlist_index] = round(class_count[0] / len(cluster.members), 2)
+            hlist.append(round(class_count[0] / len(cluster.members), 2))
         else :
-            hlist[hlist_index] = round(class_count[list_of_classes.index(largest_class)] / len(cluster.members), 2)
-        hlist_index += 1
+            hlist.append(round(class_count[list_of_classes.index(largest_class)] / len(cluster.members), 2))
 
     return hlist
 
@@ -97,11 +92,10 @@ def compute_completeness(list_of_clusters, list_of_classes) :
 
     # clist will be the completeness for each cluster.
     clist = []
-    clist_index = 0
     # list to count the total documents and their classes according to list_of_classes[i]
     # if class_count[0] = 5, then the frequency of the class in list_of_classes[0] is 5
     # sum(doc_class_counter) = total doc num
-    doc_class_counter = []
+    doc_class_counter = defaultdict(lambda:0)
     for class_type in list_of_classes :
         doc_class_counter[list_of_classes.index(class_type)] = 0
     # for every cluster, go through its members and calculate their members
@@ -113,7 +107,7 @@ def compute_completeness(list_of_clusters, list_of_classes) :
     for cluster in list_of_clusters :
         # list keeps track of count of each class in cluster corresponding with list_of_classes[i]
         # if class_count[0] = 5, then the frequency of the class in list_of_classes[0] is 5
-        class_count = []
+        class_count = defaultdict(lambda:0)
         for class_type in list_of_classes:
             class_count[list_of_classes.index(class_type)] = 0
         # count variable is to find the largest class
@@ -131,15 +125,20 @@ def compute_completeness(list_of_clusters, list_of_classes) :
                         count -= 1
                     else:
                         count += 1
+        # my own decision to make largest class the first class in the cluster if the amounts are equal
         if count == 0 :
             largest_class_index = 0
-        clist[clist_index] = round(doc_class_counter[largest_class_index] / sum(doc_class_counter), 2)
-        clist_index += 1
+        # calculates completeness. Takes the amount of docs of the largest class present in the cluster and divides it
+        # by the total amount of documents that identify with that class. Rounded to 2 decimal places
+        clist.append(round(class_count[largest_class_index] / doc_class_counter[largest_class_index], 2))
     return clist
+
+def loader_submission_showcase() :
+    __name__ = "__main__"
 
 if __name__=="__main__" :
 
-    pos_reviews, neg_reviews = create_docs(10,10)
+    pos_reviews, neg_reviews = create_docs(50,50)
 
     positive_docs = create_easy_documents(pos_reviews, 'pos',
                                  filters=[],
@@ -149,6 +148,15 @@ if __name__=="__main__" :
                                     filters=[],
                                  transforms=[])
 
+    result = k_means(2, ['pos', 'neg'], positive_docs + negative_docs)
+    print("Out of every cluster, what percentage of their documents are comprised of the most common class?")
+    print("Homogeneity:")
+    for homogeneity in compute_homogeneity(result, ['pos','neg']):
+        print(homogeneity)
+    print("\nOut of every cluster's most common class, what percentage of all documents in that class are in the cluster?")
+    print("Completeness:")
+    for completeness in compute_completeness(result, ['pos', 'neg']):
+        print(completeness)
 
 
 

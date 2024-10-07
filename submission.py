@@ -1,7 +1,6 @@
 from Cluster import k_means
 from Document import Document
-import Cluster
-import make_dataset
+from Loader import create_easy_documents, compute_homogeneity, compute_completeness, loader_submission_showcase
 from make_dataset import create_docs
 
 # Helper Function
@@ -50,4 +49,11 @@ print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 cluster_list = k_means(2, ['pos', 'neg'], documents)
 for cluster in cluster_list:
     print_cluster(cluster, token_per_row = 500)
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+
+# This section will be to show Loader.py. What this function call will do is basically what the main does:
+# First, it generates positive and negative docs. I set it as 50 positive and 50 negatives for a total of 100 docs
+# Next, It calls k_means(2, ['pos', 'neg'], positive_docs + negative_docs), making 2 clusters with the generated docs
+# Finally, it computes each cluster's homogeneity and completeness and prints its value in an ordered fashion
+loader_submission_showcase()
 print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
