@@ -32,7 +32,7 @@ def five_fold_cross_validation(nwords, nelements) :
     # divide the documents into 5 folds.
     # Clusters the 80%
     # Classifies the other 20%
-    # Repeates until every individual document has been classified
+    # Repeats until every individual document has been classified
     fold_size = len(documents) // 5
     averages = []
     i = 0
@@ -53,7 +53,7 @@ def five_fold_cross_validation(nwords, nelements) :
     return round(sum(averages) / len(averages), 2)
 
 def classify_submission_showcase() :
-    five_fold_cross_validation(100, 20)
+    five_fold_cross_validation(100, 50)
 
 if __name__=="__main__" :
-    five_fold_cross_validation(100, 10)
+    five_fold_cross_validation(100, 50)
