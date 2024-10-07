@@ -11,7 +11,7 @@ from make_dataset import create_docs
 
 # you should be able to call this like:
 # positive_docs = create_easy_documents(pos_reviews, 'pos',
-#                                  filters=[not_stopword],
+#                                  filters=[not_stopword, not_car],
 #                                  transforms=[convert_to_lowercase, remove_trailing_punct])
 def create_easy_documents(list_of_docs, true_class, filters=None, transforms=None) :
     document_list = []
@@ -19,7 +19,10 @@ def create_easy_documents(list_of_docs, true_class, filters=None, transforms=Non
         d = Document(true_class=true_class)
         words = item
         for f in filters:
-            words = [word for word in words if not_stopword(word)]
+            if f == 'not_stopword':
+                words = [word for word in words if not_stopword(word)]
+            elif f == 'not_cat':
+                words = [word for word in words if not_cat(word)]
 
         for t in transforms:
             if t == 'convert_to_lowercase':
